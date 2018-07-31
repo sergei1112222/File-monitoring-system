@@ -1,0 +1,9 @@
+C:\Users\sbuhonov\source\repos\FileMonitoringSystem\FileMonitoringSystem\bin\Debug\FileMonitoringSystem.exe.config
+C:\Users\sbuhonov\source\repos\FileMonitoringSystem\FileMonitoringSystem\bin\Debug\FileMonitoringSystem.exe
+C:\Users\sbuhonov\source\repos\FileMonitoringSystem\FileMonitoringSystem\bin\Debug\FileMonitoringSystem.pdb
+C:\Users\sbuhonov\source\repos\FileMonitoringSystem\FileMonitoringSystem\bin\Debug\log4net.dll
+C:\Users\sbuhonov\source\repos\FileMonitoringSystem\FileMonitoringSystem\bin\Debug\log4net.xml
+C:\Users\sbuhonov\source\repos\FileMonitoringSystem\FileMonitoringSystem\obj\Debug\FileMonitoringSystem.csproj.CoreCompileInputs.cache
+C:\Users\sbuhonov\source\repos\FileMonitoringSystem\FileMonitoringSystem\obj\Debug\FileMonitoringSystem.csproj.CopyComplete
+C:\Users\sbuhonov\source\repos\FileMonitoringSystem\FileMonitoringSystem\obj\Debug\FileMonitoringSystem.exe
+C:\Users\sbuhonov\source\repos\FileMonitoringSystem\FileMonitoringSystem\obj\Debug\FileMonitoringSystem.pdb
