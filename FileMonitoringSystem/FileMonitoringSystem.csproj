@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client\IClient.cs" />
+    <Compile Include="Configuration\IConfiguration.cs" />
+    <Compile Include="DataBase\IDataBase.cs" />
     <Compile Include="FileMonitoringService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -61,6 +64,10 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repository\" />
+    <Folder Include="Sender\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
