@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileMonitoringSystem.DataBase
+namespace FileMonitoringSystem.Monitoring
 {
-    interface IDataBase
+    interface IMonitoring
     {
-
+        void StartMonitor();
+        void EndMonitor();
     }
 }
