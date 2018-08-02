@@ -48,7 +48,6 @@
   <ItemGroup>
     <Compile Include="Client\IClient.cs" />
     <Compile Include="Configuration\IConfiguration.cs" />
-    <Compile Include="DataBase\IDataBase.cs" />
     <Compile Include="FileMonitoringService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -56,8 +55,12 @@
       <DependentUpon>FileMonitoringService.cs</DependentUpon>
     </Compile>
     <Compile Include="FilesMonitor.cs" />
+    <Compile Include="IUserModuleInteraction.cs" />
+    <Compile Include="Monitoring\IMonitoring.cs" />
+    <Compile Include="Monitoring\Monitor\Monitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\IRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -66,7 +69,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Repository\" />
     <Folder Include="Sender\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
