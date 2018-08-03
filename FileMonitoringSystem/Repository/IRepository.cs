@@ -22,8 +22,9 @@ namespace FileMonitoringSystem.Repository
         public bool IsSend { get; set; }
         public FileData() { }
 
-        public FileData(string name, string type, string path)
+        public FileData(Guid id, string name, string type, string path)
         {
+            Id = id;
             Name = name;
             Type = type;
             Path = path;
@@ -34,7 +35,7 @@ namespace FileMonitoringSystem.Repository
     {
        
         void Insert(FileData entity);
-        void Delete(int id);
+        void Delete(FileData removeData);
         FileData GetFileDataForSend();
     }
 }
