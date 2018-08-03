@@ -4,15 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using FileMonitoringSystem.Monitoring;
+using FileMonitoringSystem.Repository;
+using FileMonitoringSystem.Sender;
 
 namespace FileMonitoringSystem.Configuration
 {
     interface IConfiguration
     {
-        string GetServerAdress();
+        SenderSetting GetServerSetting();
 
-        string[] GetMonitoringFolders();
+        MonitorSetting GetMonitorSetting();
 
-        string[] GetMonitoringFileTypes();
+        DbSetting GetDbSetting();
     }
 }

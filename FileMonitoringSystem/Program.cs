@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using log4net;
+using FileMonitoringSystem.Configuration.Configurator;
+using FileMonitoringSystem.Monitoring.Monitor;
+using FileMonitoringSystem.Monitoring;
 
 
 namespace FileMonitoringSystem
@@ -19,7 +22,7 @@ namespace FileMonitoringSystem
         /// </summary>
         static void Main()
         {
-            log4net.GlobalContext.Properties["tab"] = "\t";
+            /*log4net.GlobalContext.Properties["tab"] = "\t";
             log4net.Config.XmlConfigurator.Configure();
             _log = LogManager.GetLogger(typeof(Program).Name);
 
@@ -40,7 +43,10 @@ namespace FileMonitoringSystem
                 new FileMonitoringService()
                 };
                 ServiceBase.Run(ServicesToRun);
-            }
+            }*/
+            Configurator conf = new Configurator();
+            MonitorSetting monitorConf = conf.GetMonitorSetting();
+            int i = 0;
         }
     }
 }

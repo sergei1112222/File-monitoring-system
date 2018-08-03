@@ -6,18 +6,24 @@ using System.Threading.Tasks;
 
 namespace FileMonitoringSystem.Repository
 {
-    public class Entity
+    public class DbSetting
     {
-        public int Id { get; set; }
+        string _dbAddr;
+
+        public DbSetting() { }
+
+    }
+    public class FileData
+    {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
         public string Path { get; set; }
         public bool IsSend { get; set; }
-        public Entity() { }
+        public FileData() { }
 
-        public Entity(int id, string name, string type, string path)
+        public FileData(string name, string type, string path)
         {
-            Id = id;
             Name = name;
             Type = type;
             Path = path;
@@ -27,8 +33,8 @@ namespace FileMonitoringSystem.Repository
     interface IRepository
     {
        
-        void Insert(Entity entity);
+        void Insert(FileData entity);
         void Delete(int id);
-        Entity GetEntityForSend();
+        FileData GetFileDataForSend();
     }
 }
