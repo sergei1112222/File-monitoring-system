@@ -8,16 +8,18 @@ namespace FileMonitoringSystem.Monitoring
 {
     public class MonitorSetting
     {
-        string[] _monitorFolders;
-        string[] _monitorFileTypes;
+        public string[] MonitorFolders { get; set; }
+        public string[] MonitorFileTypes { get; set; }
 
         public MonitorSetting() { }
 
         public MonitorSetting(string[] monitorFolders, string[] monitorFileTypes)
         {
-            _monitorFolders = monitorFolders;
-            _monitorFileTypes = monitorFileTypes;
-        }
+            MonitorFolders = monitorFolders;
+            MonitorFileTypes = monitorFileTypes;
+        } 
+
+        
     }
     interface IMonitoring
     {

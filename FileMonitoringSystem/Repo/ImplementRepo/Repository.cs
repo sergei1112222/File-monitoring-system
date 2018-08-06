@@ -5,18 +5,27 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FileMonitoringSystem.Repo;
 
-namespace FileMonitoringSystem.Repository.Repository
+namespace FileMonitoringSystem.Repo.ImplementRepo
 {
     public class Repository: IRepository
     {
-        private List<FileData> _db;
+        private List<FileData> _db; 
         private const string DBpath = "db.dat";
 
         public Repository()
         {
             _db = new List<FileData>();
         }
+
+        public void OperationWithModFile(string name, int flagOperation)
+        {
+            Guid id = Guid.NewGuid();
+            string[] fileData = name.Split('.');
+            Insert(new FileData(id, name, fileData[fileData.Length - 1]));
+        }
+
 
         public void Insert(FileData fileData)
         {
@@ -31,10 +40,11 @@ namespace FileMonitoringSystem.Repository.Repository
 
         public FileData GetFileDataForSend()
         {
+            //EMPTY CLASS
             return new FileData();
         }
 
-        public void SaveNotebook()
+        public void SaveFileData()
         {
             try
             {
@@ -45,7 +55,7 @@ namespace FileMonitoringSystem.Repository.Repository
                         writer.Write(elem.Id.ToString());
                         writer.Write(elem.Name);
                         writer.Write(elem.Type);
-                        writer.Write(elem.Path);
+                        
                     }
                 }
             }
@@ -59,7 +69,7 @@ namespace FileMonitoringSystem.Repository.Repository
         {
             try
             {
-                ReadNoteBookDataFromfile();
+                ReadFileDataFromfile();
             }
             catch
             {
@@ -68,23 +78,6 @@ namespace FileMonitoringSystem.Repository.Repository
             return true;
         }
 
-       
-
-        private void ReadNoteBookDataFromfile()
-        {
-            using (BinaryReader reader = new BinaryReader(File.Open(DBpath, FileMode.OpenOrCreate)))
-            {
-                while (reader.PeekChar() > -1)
-                {
-                    Guid id = Guid.Parse(reader.ReadString());
-                    string fileName = reader.ReadString();
-                    string filetype = reader.ReadString();
-                    string filePath = reader.ReadString();
-
-                    _db.Add(new FileData(id, fileName, filetype, filePath));
-                }
-            }
-        }
         public static void Compress(string sourceFile, string compressedFile)
         {
             // поток для чтения исходного файла
@@ -101,5 +94,22 @@ namespace FileMonitoringSystem.Repository.Repository
                 }
             }
         }
+
+        private void ReadFileDataFromfile()
+        {
+            using (BinaryReader reader = new BinaryReader(File.Open(DBpath, FileMode.OpenOrCreate)))
+            {
+                while (reader.PeekChar() > -1)
+                {
+                    Guid id = Guid.Parse(reader.ReadString());
+                    string fileName = reader.ReadString();
+                    string filetype = reader.ReadString();
+                    
+
+                    _db.Add(new FileData(id, fileName, filetype));
+                }
+            }
+        }
+        
     }
 }

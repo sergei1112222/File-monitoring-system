@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client\ClientManager.cs" />
     <Compile Include="Client\IClient.cs" />
     <Compile Include="Configuration\Configurator\Configurator.cs" />
     <Compile Include="Configuration\IConfiguration.cs" />
@@ -61,8 +62,8 @@
     <Compile Include="Monitoring\Monitor\Monitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\IRepository.cs" />
-    <Compile Include="Repository\Repository\Repository.cs" />
+    <Compile Include="Repo\IRepository.cs" />
+    <Compile Include="Repo\ImplementRepo\Repository.cs" />
     <Compile Include="Sender\ISender.cs" />
   </ItemGroup>
   <ItemGroup>

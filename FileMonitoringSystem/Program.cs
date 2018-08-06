@@ -9,7 +9,7 @@ using log4net;
 using FileMonitoringSystem.Configuration.Configurator;
 using FileMonitoringSystem.Monitoring.Monitor;
 using FileMonitoringSystem.Monitoring;
-
+using FileMonitoringSystem.Client;
 
 namespace FileMonitoringSystem
 {
@@ -44,9 +44,8 @@ namespace FileMonitoringSystem
                 };
                 ServiceBase.Run(ServicesToRun);
             }*/
-            Configurator conf = new Configurator();
-            MonitorSetting monitorConf = conf.GetMonitorSetting();
-            int i = 0;
+            ClientManager Client = new ClientManager();
+            Client.InitializeListeners();
         }
     }
 }

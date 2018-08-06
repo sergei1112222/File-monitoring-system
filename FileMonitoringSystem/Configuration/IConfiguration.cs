@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using FileMonitoringSystem.Monitoring;
-using FileMonitoringSystem.Repository;
+using FileMonitoringSystem.Repo;
 using FileMonitoringSystem.Sender;
 
 namespace FileMonitoringSystem.Configuration

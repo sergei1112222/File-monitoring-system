@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileMonitoringSystem.Repository
+namespace FileMonitoringSystem.Repo
 {
     public class DbSetting
     {
@@ -16,18 +16,18 @@ namespace FileMonitoringSystem.Repository
     public class FileData
     {
         public Guid Id { get; set; }
+        public int version { get; private set; }
         public string Name { get; set; }
         public string Type { get; set; }
-        public string Path { get; set; }
         public bool IsSend { get; set; }
         public FileData() { }
 
-        public FileData(Guid id, string name, string type, string path)
+        public FileData(Guid id, string name, string type)
         {
             Id = id;
             Name = name;
             Type = type;
-            Path = path;
+            
         }
     }
 

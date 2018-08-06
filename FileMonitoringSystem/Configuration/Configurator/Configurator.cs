@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FileMonitoringSystem.Monitoring;
-using FileMonitoringSystem.Repository;
+
 using FileMonitoringSystem.Sender;
 using System.Xml;
+using FileMonitoringSystem.Repo;
 
 namespace FileMonitoringSystem.Configuration.Configurator
 {
