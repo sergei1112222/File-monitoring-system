@@ -16,18 +16,18 @@ namespace FileMonitoringSystem.Repo
     public class FileData
     {
         public Guid Id { get; set; }
-        public int version { get; private set; }
         public string Name { get; set; }
         public string Type { get; set; }
-        public bool IsSend { get; set; }
+        public bool IsSynh { get; set; }
+        public DateTime Date { get; set; }
         public FileData() { }
 
-        public FileData(Guid id, string name, string type)
+        public FileData(Guid id, string name, string type, DateTime date)
         {
             Id = id;
             Name = name;
             Type = type;
-            
+            Date = date;
         }
     }
 

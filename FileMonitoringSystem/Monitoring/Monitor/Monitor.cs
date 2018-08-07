@@ -9,25 +9,14 @@ using FileMonitoringSystem.Repo.ImplementRepo;
 
 namespace FileMonitoringSystem.Monitoring.Monitor
 {
-    public class FileChangeListener
-    {
-        private Repository _repo;
-        private Monitor[] Monitors;
-
-        public FileChangeListener(Repository repo)
-        {
-            _repo = repo;
-        }
-    }
-   
     public class Monitor: IMonitoring
     {
         private  FileSystemWatcher _fileSystemWatcher;
-        
+        private QueueBuffer _buff;
 
-        public Monitor(Repository repo)
+        public Monitor(QueueBuffer  buff)
         {
-            _repo = repo;
+            _buff = buff;
         }
         
         public  void MonitorNode(string Name, string  monitoringFileType)
@@ -51,18 +40,17 @@ namespace FileMonitoringSystem.Monitoring.Monitor
         }
         private  void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
-            _repo.OperationWithModFile(e.Name, 0);
-            
+            _buff.AddCreatedFile(e);
         }
 
-        private  void FileSystemWatcher_Renamed(object sender, FileSystemEventArgs e)
+        private  void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
         {
-            _repo.OperationWithModFile(e.Name, 1);
+            _buff.AddRenamedFile(e);
         }
 
         private  void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
-            _repo.OperationWithModFile(e.Name, 2);
+            //_repo.OperationWithModFile(e.Name, 2);
         }
     }
 }

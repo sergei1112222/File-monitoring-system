@@ -11,7 +11,9 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
 {
     public class Repository: IRepository
     {
-        private List<FileData> _db; 
+        private List<FileData> _db;
+        private Queue<FileData> _qBuffer;
+        
         private const string DBpath = "db.dat";
 
         public Repository()
@@ -23,7 +25,8 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
         {
             Guid id = Guid.NewGuid();
             string[] fileData = name.Split('.');
-            Insert(new FileData(id, name, fileData[fileData.Length - 1]));
+            Insert(new FileData(id, name, fileData[fileData.Length - 1], DateTime.Now));
+            _qBuffer.Enqueue(new FileData(id, name, fileData[fileData.Length - 1], DateTime.Now));
         }
 
 

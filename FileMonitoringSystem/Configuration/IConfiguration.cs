@@ -12,6 +12,7 @@ namespace FileMonitoringSystem.Configuration
 {
     interface IConfiguration
     {
+        
         SenderSetting GetServerSetting();
 
         MonitorSetting GetMonitorSetting();

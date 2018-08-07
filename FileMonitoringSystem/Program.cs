@@ -22,14 +22,15 @@ namespace FileMonitoringSystem
         /// </summary>
         static void Main()
         {
-            /*log4net.GlobalContext.Properties["tab"] = "\t";
+            log4net.GlobalContext.Properties["tab"] = "\t";
             log4net.Config.XmlConfigurator.Configure();
             _log = LogManager.GetLogger(typeof(Program).Name);
-
+            _log.Info("Start as console");
+            /*
             var args = Environment.GetCommandLineArgs();
             if(args.Length > 1 && args[1] == "console")
             {
-                _log.Info("Start as console");
+               
 
                 FilesMonitor myProg = new FilesMonitor();
                 myProg.Work();
