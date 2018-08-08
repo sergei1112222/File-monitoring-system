@@ -109,7 +109,7 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
                     string filetype = reader.ReadString();
                     
 
-                    _db.Add(new FileData(id, fileName, filetype));
+                   // _db.Add(new FileData(id, fileName, filetype));
                 }
             }
         }

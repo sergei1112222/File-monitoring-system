@@ -21,9 +21,5 @@ namespace FileMonitoringSystem.Monitoring
 
         
     }
-    interface IMonitoring
-    {
-        void StartMonitor();
-        void EndMonitor();
-    }
+
 }

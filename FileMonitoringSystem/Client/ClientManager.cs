@@ -18,7 +18,7 @@ namespace FileMonitoringSystem.Client
         private IConfiguration _conf;
         private MonitorSetting monitorSetting;
 
-
+        public ChangesBuffer changeBuf;
         public Repository Repo;
         public Monitor[] FileChangeListeners;
 
@@ -27,7 +27,7 @@ namespace FileMonitoringSystem.Client
         {
             _conf = new Configurator();
             monitorSetting = _conf.GetMonitorSetting();
-            Repo = new Repository();
+            changeBuf = new ChangesBuffer();
         }
 
         public void InitializeListeners()
@@ -39,15 +39,25 @@ namespace FileMonitoringSystem.Client
             int i = 0;
             foreach (string path in monitorSetting.MonitorFolders)
             {
-                FileChangeListeners[i] = new Monitor(Repo);
+                
                 foreach (string type in monitorSetting.MonitorFileTypes)
                 {
+                    FileChangeListeners[i] = new Monitor(changeBuf);
                     FileChangeListeners[i].MonitorNode(path, "*."+type);
                     i++;
                 }
             }
+
+            new System.Threading.Thread(operationListener).Start();
         }
 
+        private void operationListener()
+        {
+            while (true)
+            {
+                changeBuf.Dequeue(5);
+            }
+        }
         public void OperationWithModFile()
         {
 

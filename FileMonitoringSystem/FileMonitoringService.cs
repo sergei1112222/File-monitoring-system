@@ -8,21 +8,30 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
+using log4net;
 
 namespace FileMonitoringSystem
 {
     public partial class FileMonitoringService : ServiceBase
     {
         private FilesMonitor _myProg = new FilesMonitor();
+        
 
         public FileMonitoringService()
         {
             InitializeComponent();
         }
+        public void operation()
+        {
+            
+        }
 
         protected override void OnStart(string[] args)
         {
-            Task.Run(() => { _myProg.Work(); });                       
+            //Client.ClientManager client = new Client.ClientManager();
+            //client.InitializeListeners();
+            //Program._log.Info("Good start!");
         }
 
         protected override void OnStop()
