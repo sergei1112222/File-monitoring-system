@@ -18,7 +18,7 @@ namespace FileMonitoringSystem
 {
     static class Program
     {
-        public static ILog _log;
+        private static ILog _log;
         public static void ConfigLog()
         {
             string _configPath = "config.xml";
@@ -51,7 +51,7 @@ namespace FileMonitoringSystem
                 sw.Start();
                 ConfigLog();                
                 sw.Stop();
-                _log.Info(sw.ElapsedMilliseconds);
+                //_log.Info(sw.ElapsedMilliseconds);
                 //Client.ClientManager client = new Client.ClientManager();
                 //client.InitializeListeners();
                 

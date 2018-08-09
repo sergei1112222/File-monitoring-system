@@ -30,7 +30,6 @@ namespace FileMonitoringSystem
         protected override void OnStart(string[] args)
         {
             Client.ClientManager client = new Client.ClientManager();
-            Program._log.Info("Good start!");
             client.InitializeListeners();
             
         }

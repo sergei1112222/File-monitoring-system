@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FileMonitoringSystem.Repo;
 using FileMonitoringSystem.Repo.ImplementRepo;
+using log4net;
 
 namespace FileMonitoringSystem.Monitoring
 {
@@ -12,6 +13,7 @@ namespace FileMonitoringSystem.Monitoring
     public class ChangesBuffer
     {
         private Dictionary<string, FileState> _files = new Dictionary<string, FileState>();
+        private ILog _log = LogManager.GetLogger(typeof(ChangesBuffer).Name);
         private Repository _repo;
 
         public ChangesBuffer(Repository repo)
@@ -77,7 +79,7 @@ namespace FileMonitoringSystem.Monitoring
                         {
                             var file = query.First();
 
-                            Program._log.Info($"Removed from buffer: {file.Path}");
+                            _log.Info($"Removed from buffer: {file.Path}");
                             _repo.Insert(new FileData(Guid.NewGuid(), file.Path, file.TimeSpan));
                             _files.Remove(file.Path);
                             

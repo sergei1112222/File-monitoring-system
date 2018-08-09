@@ -63,11 +63,9 @@
     <Compile Include="IUserModuleInteraction.cs" />
     <Compile Include="Monitoring\ChangesBuffer.cs" />
     <Compile Include="Monitoring\FileState.cs" />
-    <Compile Include="Monitoring\IMonitoring.cs" />
     <Compile Include="Monitoring\Monitor\Monitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repo\Buffer.cs" />
     <Compile Include="Repo\IRepository.cs" />
     <Compile Include="Repo\ImplementRepo\Repository.cs" />
     <Compile Include="Sender\ISender.cs" />

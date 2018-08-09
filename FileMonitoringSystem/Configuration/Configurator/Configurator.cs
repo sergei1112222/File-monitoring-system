@@ -8,6 +8,7 @@ using FileMonitoringSystem.Monitoring;
 using FileMonitoringSystem.Sender;
 using System.Xml;
 using FileMonitoringSystem.Repo;
+using FileMonitoringSystem.Monitoring.Monitor;
 
 namespace FileMonitoringSystem.Configuration.Configurator
 {
@@ -24,7 +25,7 @@ namespace FileMonitoringSystem.Configuration.Configurator
         {
             string monitoringDirArr = "";
             string monitoringTypeArr = "";
-            XmlElement xElement = loadConfig("monitoringConf");
+            XmlElement xElement = LoadConfig("monitoringConf");
             foreach (XmlElement xNode in xElement)
             {
                 if (xNode.Name == "monitoringDirectoryes")
@@ -44,7 +45,7 @@ namespace FileMonitoringSystem.Configuration.Configurator
             return new DbSetting();
         }
 
-        private XmlElement loadConfig(string unitName)
+        private XmlElement LoadConfig(string unitName)
         {
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load(_configPath);

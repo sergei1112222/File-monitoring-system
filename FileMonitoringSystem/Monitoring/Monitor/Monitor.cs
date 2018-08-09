@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using FileMonitoringSystem.Repo;
 using FileMonitoringSystem.Repo.ImplementRepo;
+using log4net;
 
 namespace FileMonitoringSystem.Monitoring.Monitor
 {
@@ -13,6 +14,7 @@ namespace FileMonitoringSystem.Monitoring.Monitor
     {
         private  FileSystemWatcher [] _fileSystemWatcher;
         private ChangesBuffer _buff;
+        private ILog _log = LogManager.GetLogger(typeof(Monitor).Name);
 
         public Monitor(ChangesBuffer buff, string[] MonitorFileTypes, string[] MonitorFolders)
         {
@@ -55,19 +57,19 @@ namespace FileMonitoringSystem.Monitoring.Monitor
         }
         private  void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
-            Program._log.Info($"{e.FullPath} created!");
+            _log.Info($"{e.FullPath} created!");
             _buff.Created(e.FullPath);
         }
         private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            Program._log.Info($"{e.FullPath} changed!");
+            _log.Info($"{e.FullPath} changed!");
             _buff.Changed(e.FullPath);
         }
 
         private  void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
         {
             _buff.Renamed(e.OldFullPath, e.FullPath);
-            Program._log.Info($"{e.OldFullPath} renamed to {e.FullPath}!");
+            _log.Info($"{e.OldFullPath} renamed to {e.FullPath}!");
         }
 
         private  void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
@@ -77,5 +79,20 @@ namespace FileMonitoringSystem.Monitoring.Monitor
             
             
         }
+    }
+    public class MonitorSetting
+    {
+        public string[] MonitorFolders { get; set; }
+        public string[] MonitorFileTypes { get; set; }
+
+        public MonitorSetting() { }
+
+        public MonitorSetting(string[] monitorFolders, string[] monitorFileTypes)
+        {
+            MonitorFolders = monitorFolders;
+            MonitorFileTypes = monitorFileTypes;
+        }
+
+
     }
 }
