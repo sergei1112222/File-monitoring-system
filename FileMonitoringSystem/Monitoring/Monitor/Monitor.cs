@@ -11,25 +11,38 @@ namespace FileMonitoringSystem.Monitoring.Monitor
 {
     public class Monitor
     {
-        private  FileSystemWatcher _fileSystemWatcher;
+        private  FileSystemWatcher [] _fileSystemWatcher;
         private ChangesBuffer _buff;
 
-        public Monitor(ChangesBuffer buff)
+        public Monitor(ChangesBuffer buff, string[] MonitorFileTypes, string[] MonitorFolders)
         {
             _buff = buff;
+            int countFileType = MonitorFileTypes.Length;
+            int countfolder = MonitorFolders.Length;
+            _fileSystemWatcher = new FileSystemWatcher[countFileType * countfolder];
+
+            int i = 0;
+            foreach (string path in MonitorFolders)
+            { 
+                foreach (string type in MonitorFileTypes)
+                {
+                    _fileSystemWatcher[i] = MonitorNode(path, "*." + type);
+                    i++;
+                }
+            }
         }
         
-        public  void MonitorNode(string Name, string  monitoringFileType)
+        private FileSystemWatcher MonitorNode(string Name, string  monitoringFileType)
         {
-            _fileSystemWatcher = new FileSystemWatcher();
-            _fileSystemWatcher.Path = Name;
-            _fileSystemWatcher.Filter = monitoringFileType;
-            _fileSystemWatcher.Created += FileSystemWatcher_Created;
-            _fileSystemWatcher.Changed += FileSystemWatcher_Changed;
-            _fileSystemWatcher.Renamed += FileSystemWatcher_Renamed;
-            _fileSystemWatcher.Deleted += FileSystemWatcher_Deleted;
-            _fileSystemWatcher.EnableRaisingEvents = true;
-            //_fileSystemWatcher.IncludeSubdirectories = true;
+            FileSystemWatcher _fsw = new FileSystemWatcher();
+            _fsw.Path = Name;
+            _fsw.Filter = monitoringFileType;
+            _fsw.Created += FileSystemWatcher_Created;
+            _fsw.Changed += FileSystemWatcher_Changed;
+            _fsw.Renamed += FileSystemWatcher_Renamed;
+            _fsw.Deleted += FileSystemWatcher_Deleted;
+            _fsw.EnableRaisingEvents = true;
+            return _fsw;
         }
 
         public  void StartMonitor()
@@ -38,17 +51,17 @@ namespace FileMonitoringSystem.Monitoring.Monitor
         }
         public  void EndMonitor()
         {
-            _fileSystemWatcher.EnableRaisingEvents = false;
+         //   _fileSystemWatcher.EnableRaisingEvents = false;
         }
         private  void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
-            _buff.Created(e.FullPath);
             Program._log.Info($"{e.FullPath} created!");
+            _buff.Created(e.FullPath);
         }
         private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            _buff.Changed(e.FullPath);
             Program._log.Info($"{e.FullPath} changed!");
+            _buff.Changed(e.FullPath);
         }
 
         private  void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
@@ -59,8 +72,10 @@ namespace FileMonitoringSystem.Monitoring.Monitor
 
         private  void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
-            _buff.Deleted(e.FullPath);
             Program._log.Info($"{e.FullPath} removed!");
+            _buff.Deleted(e.FullPath);
+            
+            
         }
     }
 }

@@ -35,7 +35,7 @@ namespace FileMonitoringSystem.Repo
         {
             Guid id = Guid.NewGuid();
             string[] fileData = data.Name.Split('.');
-            _qBuffer.Add(new FileData(id, data.Name, fileData[fileData.Length - 1], DateTime.Now));
+            //_qBuffer.Add(new FileData(id, data.Name, fileData[fileData.Length - 1], DateTime.Now));
         }
 
         public void AddChangedFile(FileSystemEventArgs data)

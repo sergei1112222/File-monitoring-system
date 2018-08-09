@@ -12,7 +12,7 @@ using FileMonitoringSystem.Monitoring;
 namespace FileMonitoringSystem.Client
 {
     
-    class ClientManager
+    public class ClientManager
     {
       
         private IConfiguration _conf;
@@ -20,34 +20,20 @@ namespace FileMonitoringSystem.Client
 
         public ChangesBuffer changeBuf;
         public Repository Repo;
-        public Monitor[] FileChangeListeners;
+        public Monitor FileChangeListeners;
 
 
         public ClientManager()
         {
             _conf = new Configurator();
+            Repo = new Repository();
             monitorSetting = _conf.GetMonitorSetting();
-            changeBuf = new ChangesBuffer();
+            changeBuf = new ChangesBuffer(Repo);
         }
 
         public void InitializeListeners()
         {
-            int countFileType = monitorSetting.MonitorFileTypes.Length;
-            int countfolder = monitorSetting.MonitorFolders.Length;
-            FileChangeListeners = new Monitor[countFileType * countfolder];    
-        
-            int i = 0;
-            foreach (string path in monitorSetting.MonitorFolders)
-            {
-                
-                foreach (string type in monitorSetting.MonitorFileTypes)
-                {
-                    FileChangeListeners[i] = new Monitor(changeBuf);
-                    FileChangeListeners[i].MonitorNode(path, "*."+type);
-                    i++;
-                }
-            }
-
+            FileChangeListeners = new Monitor(changeBuf, monitorSetting.MonitorFileTypes, monitorSetting.MonitorFolders);
             new System.Threading.Thread(operationListener).Start();
         }
 

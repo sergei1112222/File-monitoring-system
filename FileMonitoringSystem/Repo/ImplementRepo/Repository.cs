@@ -12,7 +12,6 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
     public class Repository: IRepository
     {
         private List<FileData> _db;
-        private Queue<FileData> _qBuffer;
         
         private const string DBpath = "db.dat";
 
@@ -25,14 +24,17 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
         {
             Guid id = Guid.NewGuid();
             string[] fileData = name.Split('.');
-            Insert(new FileData(id, name, fileData[fileData.Length - 1], DateTime.Now));
-            _qBuffer.Enqueue(new FileData(id, name, fileData[fileData.Length - 1], DateTime.Now));
+            //Insert(new FileData(id, name, fileData[fileData.Length - 1], DateTime.Now));
+            
         }
 
 
         public void Insert(FileData fileData)
         {
             _db.Add(fileData);
+            Program._log.Info($"Compress start, {fileData.Name}");
+            Compress(fileData.Name, $"ZipStorage\\ {fileData.Id.ToString()} .zip");
+            Program._log.Info($"Compress success1, {fileData.Name}");
 
         }
 
@@ -57,7 +59,6 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
                     {
                         writer.Write(elem.Id.ToString());
                         writer.Write(elem.Name);
-                        writer.Write(elem.Type);
                         
                     }
                 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FileMonitoringSystem.Repo;
+using FileMonitoringSystem.Repo.ImplementRepo;
 
 namespace FileMonitoringSystem.Monitoring
 {
@@ -10,10 +12,16 @@ namespace FileMonitoringSystem.Monitoring
     public class ChangesBuffer
     {
         private Dictionary<string, FileState> _files = new Dictionary<string, FileState>();
+        private Repository _repo;
+
+        public ChangesBuffer(Repository repo)
+        {
+            _repo = repo;
+        }
 
         public void Created(string path)
         {
-            lock (_files)
+            //lock (_files)
                 if (!_files.ContainsKey(path))
                     _files.Add(path, new FileState(path));
                 else
@@ -61,13 +69,20 @@ namespace FileMonitoringSystem.Monitoring
                 lock (_files)
                     if (_files.Count > 0)
                     {
-                        var file = _files.Values
+
+                        var query = _files.Values
                             .Where(f => f.TimeSpan < DateTime.Now.AddSeconds(-intactSeconds))
-                            .OrderBy(f => f.TimeSpan)
-                            .First();
-                        Program._log.Info($"Removed from buffer: {file.Path}");
-                        _files.Remove(file.Path);
-                        return file;
+                            .OrderBy(f => f.TimeSpan);
+                        if (query.Count() > 0)
+                        {
+                            var file = query.First();
+
+                            Program._log.Info($"Removed from buffer: {file.Path}");
+                            _repo.Insert(new FileData(Guid.NewGuid(), file.Path, file.TimeSpan));
+                            _files.Remove(file.Path);
+                            
+                            return file;
+                        }
                     }
 
             return null;
