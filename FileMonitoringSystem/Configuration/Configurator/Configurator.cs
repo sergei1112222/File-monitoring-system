@@ -8,7 +8,6 @@ using FileMonitoringSystem.Monitoring;
 using FileMonitoringSystem.Sender;
 using System.Xml;
 using FileMonitoringSystem.Repo;
-using FileMonitoringSystem.Monitoring.Monitor;
 
 namespace FileMonitoringSystem.Configuration.Configurator
 {

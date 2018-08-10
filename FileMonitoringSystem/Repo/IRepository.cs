@@ -16,24 +16,31 @@ namespace FileMonitoringSystem.Repo
     public class FileData
     {
         public Guid Id { get; set; }
+        public string Path { get; set; }
         public string Name { get; set; }
-        public bool IsSynh { get; set; }
-        public DateTime Date { get; set; }
+        public string OldPath { get; set; }
+        public bool IsRemove { get; set; }
+        public DateTime TimeSpan { get; set; }
+        public string ContentHash { get; set; }
         public FileData() { }
 
-        public FileData(Guid id, string name, DateTime date)
+        public FileData(Guid id, string path, string name, string oldPath,bool isRemove, DateTime timeSpan, string contentHash)
         {
             Id = id;
+            Path = path;
             Name = name;
-            Date = date;
+            OldPath = oldPath;
+            IsRemove = isRemove;
+            TimeSpan = timeSpan;
+            ContentHash = contentHash;
         }
     }
 
-    interface IRepository
+    public interface IRepository
     {
        
         void Insert(FileData entity);
         void Delete(FileData removeData);
-        FileData GetFileDataForSend();
+        List<FileData> ReturnDataBase();
     }
 }

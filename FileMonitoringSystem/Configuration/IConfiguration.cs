@@ -5,13 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using FileMonitoringSystem.Monitoring;
-using FileMonitoringSystem.Monitoring.Monitor;
 using FileMonitoringSystem.Repo;
 using FileMonitoringSystem.Sender;
 
 namespace FileMonitoringSystem.Configuration
 {
-    interface IConfiguration
+    public interface IConfiguration
     {
         
         SenderSetting GetServerSetting();

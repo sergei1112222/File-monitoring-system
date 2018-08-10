@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using FileMonitoringSystem.Repo.ImplementRepo;
 using FileMonitoringSystem.Configuration;
-using FileMonitoringSystem.Monitoring.Monitor;
-using FileMonitoringSystem.Configuration.Configurator;
 using FileMonitoringSystem.Monitoring;
+using FileMonitoringSystem.Configuration.Configurator;
+using FileMonitoringSystem.Repo;
 
 namespace FileMonitoringSystem.Client
 {
@@ -19,16 +19,27 @@ namespace FileMonitoringSystem.Client
         private MonitorSetting monitorSetting;
 
         public ChangesBuffer changeBuf;
-        public Repository Repo;
+        public IRepository Repo;
         public Monitor FileChangeListeners;
 
 
-        public ClientManager()
+        public ClientManager(IConfiguration config, IRepository repository)
         {
-            _conf = new Configurator();
+            _conf = config;
             Repo = new Repository();
             monitorSetting = _conf.GetMonitorSetting();
-            changeBuf = new ChangesBuffer(Repo);
+            changeBuf = new ChangesBuffer();
+        }
+        public void Start()
+        {
+            //Start monitoring
+            //Start Change handle
+            //Start sender
+        }
+
+        public void Stop()
+        {
+
         }
 
         public void InitializeListeners()

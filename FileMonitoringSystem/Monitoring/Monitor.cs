@@ -8,7 +8,7 @@ using FileMonitoringSystem.Repo;
 using FileMonitoringSystem.Repo.ImplementRepo;
 using log4net;
 
-namespace FileMonitoringSystem.Monitoring.Monitor
+namespace FileMonitoringSystem.Monitoring
 {
     public class Monitor
     {
@@ -74,7 +74,7 @@ namespace FileMonitoringSystem.Monitoring.Monitor
 
         private  void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
-            Program._log.Info($"{e.FullPath} removed!");
+            _log.Info($"{e.FullPath} removed!");
             _buff.Deleted(e.FullPath);
             
             

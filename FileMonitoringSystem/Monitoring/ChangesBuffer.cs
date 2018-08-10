@@ -14,16 +14,12 @@ namespace FileMonitoringSystem.Monitoring
     {
         private Dictionary<string, FileState> _files = new Dictionary<string, FileState>();
         private ILog _log = LogManager.GetLogger(typeof(ChangesBuffer).Name);
-        private Repository _repo;
 
-        public ChangesBuffer(Repository repo)
-        {
-            _repo = repo;
-        }
-
+        public ChangesBuffer() { }
+        
         public void Created(string path)
         {
-            //lock (_files)
+            lock (_files)
                 if (!_files.ContainsKey(path))
                     _files.Add(path, new FileState(path));
                 else
@@ -80,7 +76,6 @@ namespace FileMonitoringSystem.Monitoring
                             var file = query.First();
 
                             _log.Info($"Removed from buffer: {file.Path}");
-                            _repo.Insert(new FileData(Guid.NewGuid(), file.Path, file.TimeSpan));
                             _files.Remove(file.Path);
                             
                             return file;

@@ -49,8 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client\ClientManager.cs" />
-    <Compile Include="Client\IClient.cs" />
+    <Compile Include="ClientManager.cs" />
     <Compile Include="Configuration\Configurator\Configurator.cs" />
     <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="FileMonitoringService.cs">
@@ -59,11 +58,10 @@
     <Compile Include="FileMonitoringService.Designer.cs">
       <DependentUpon>FileMonitoringService.cs</DependentUpon>
     </Compile>
-    <Compile Include="FilesMonitor.cs" />
-    <Compile Include="IUserModuleInteraction.cs" />
+    <Compile Include="Monitoring\ChangeHandler.cs" />
     <Compile Include="Monitoring\ChangesBuffer.cs" />
     <Compile Include="Monitoring\FileState.cs" />
-    <Compile Include="Monitoring\Monitor\Monitor.cs" />
+    <Compile Include="Monitoring\Monitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repo\IRepository.cs" />

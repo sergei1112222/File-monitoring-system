@@ -8,6 +8,7 @@ namespace FileMonitoringSystem.Monitoring
 {
     public class FileState
     {
+        public string Name { get; set; }
         public string Path { get; set; }
         public string OldPath { get; set; }
         public bool IsDeleted { get; set; }

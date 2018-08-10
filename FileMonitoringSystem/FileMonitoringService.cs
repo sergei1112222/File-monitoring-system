@@ -15,7 +15,7 @@ namespace FileMonitoringSystem
 {
     public partial class FileMonitoringService : ServiceBase
     {
-        private FilesMonitor _myProg = new FilesMonitor();
+       
         
 
         public FileMonitoringService()
@@ -36,7 +36,7 @@ namespace FileMonitoringSystem
 
         protected override void OnStop()
         {
-            _myProg.Stop();
+            
         }
     }
 }

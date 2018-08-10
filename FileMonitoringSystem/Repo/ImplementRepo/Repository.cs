@@ -6,13 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FileMonitoringSystem.Repo;
+using log4net;
 
 namespace FileMonitoringSystem.Repo.ImplementRepo
 {
     public class Repository: IRepository
     {
         private List<FileData> _db;
-        
+        private ILog _log = LogManager.GetLogger(typeof(Repository).Name);
         private const string DBpath = "db.dat";
 
         public Repository()
@@ -32,9 +33,9 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
         public void Insert(FileData fileData)
         {
             _db.Add(fileData);
-            Program._log.Info($"Compress start, {fileData.Name}");
-            Compress(fileData.Name, $"ZipStorage\\ {fileData.Id.ToString()} .zip");
-            Program._log.Info($"Compress success1, {fileData.Name}");
+            _log.Info($"Compress start, {fileData.Path}");
+            Compress(fileData.Path, $"ZipStorage\\ {fileData.Id.ToString()} .zip");
+            _log.Info($"Compress success1, {fileData.Path}");
 
         }
 
@@ -49,6 +50,11 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
             return new FileData();
         }
 
+        public List<FileData> ReturnDataBase()
+        {
+            return _db.GetRange(0,_db.Count);
+        }
+
         public void SaveFileData()
         {
             try
@@ -58,7 +64,7 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
                     foreach (var elem in _db)
                     {
                         writer.Write(elem.Id.ToString());
-                        writer.Write(elem.Name);
+                        writer.Write(elem.Path);
                         
                     }
                 }

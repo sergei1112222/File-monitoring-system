@@ -9,7 +9,6 @@ using System.Xml.Linq;
 using System.Xml;
 using log4net;
 using FileMonitoringSystem.Configuration.Configurator;
-using FileMonitoringSystem.Monitoring.Monitor;
 using FileMonitoringSystem.Monitoring;
 using FileMonitoringSystem.Client;
 using System.Diagnostics;
