@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace FileMonitoringSystem.Sender
 {
-    public class SenderSetting
+    public class SenderSettings
     {
         string _serverAdress;
         int _port;
 
-        public SenderSetting() { }
+        public SenderSettings() { }
 
-        public SenderSetting(string serverAddr, int port)
+        public SenderSettings(string serverAddr, int port)
         {
             _serverAdress = serverAddr;
             _port = port;

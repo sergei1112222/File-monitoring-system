@@ -7,30 +7,62 @@ using System.IO;
 using FileMonitoringSystem.Repo;
 using FileMonitoringSystem.Repo.ImplementRepo;
 using log4net;
+using FileMonitoringSystem.Common;
 
 namespace FileMonitoringSystem.Monitoring
 {
-    public class Monitor
+    public class MonitorSettings
     {
-        private FileSystemWatcher[] _fileSystemWatcher;
-        private ChangesBuffer _buff;
+        public string[] MonitorFolders { get; set; }
+        public string[] MonitorFileTypes { get; set; }
+
+        public MonitorSettings() { }
+
+        public MonitorSettings(string[] monitorFolders, string[] monitorFileTypes)
+        {
+            MonitorFolders = monitorFolders;
+            MonitorFileTypes = monitorFileTypes;
+        }
+    }
+
+    public class Monitor : IWorker
+    {
         private ILog _log = LogManager.GetLogger(typeof(Monitor).Name);
 
-        public Monitor(ChangesBuffer buff, string[] MonitorFileTypes, string[] MonitorFolders)
+        private MonitorSettings _settings;        
+        private ChangesBuffer _buff;
+        private FileSystemWatcher[] _watchers;
+
+
+        public Monitor(ChangesBuffer buff, MonitorSettings settings)
         {
             _buff = buff;
-            int countFileType = MonitorFileTypes.Length;
-            int countfolder = MonitorFolders.Length;
-            _fileSystemWatcher = new FileSystemWatcher[countFileType * countfolder];
+            _settings = settings;
+        }
+
+        public void Start()
+        {
+            int countFileType = _settings.MonitorFileTypes.Length;
+            int countfolder = _settings.MonitorFolders.Length;
+            _watchers = new FileSystemWatcher[countFileType * countfolder];
 
             int i = 0;
-            foreach (string path in MonitorFolders)
-            { 
-                foreach (string type in MonitorFileTypes)
+            foreach (string path in _settings.MonitorFolders)
+            {
+                foreach (string type in _settings.MonitorFileTypes)
                 {
-                    _fileSystemWatcher[i] = MonitorNode(path, "*." + type);
+                    _watchers[i] = MonitorNode(path, "*." + type);
                     i++;
                 }
+            }
+        }
+
+        public void Stop()
+        {
+            foreach (var watcher in _watchers)
+            {
+                watcher.EnableRaisingEvents = false;
+                watcher.Dispose();
             }
         }
         
@@ -47,14 +79,7 @@ namespace FileMonitoringSystem.Monitoring
             return _fsw;
         }
 
-        public  void StartMonitor()
-        {
-           
-        }
-        public  void EndMonitor()
-        {
-         //   _fileSystemWatcher.EnableRaisingEvents = false;
-        }
+
         private  void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
             _log.Info($"{e.FullPath} created!");
@@ -75,24 +100,9 @@ namespace FileMonitoringSystem.Monitoring
         private  void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
             _log.Info($"{e.FullPath} removed!");
-            _buff.Deleted(e.FullPath);
-            
+            _buff.Deleted(e.FullPath);          
             
         }
     }
-    public class MonitorSetting
-    {
-        public string[] MonitorFolders { get; set; }
-        public string[] MonitorFileTypes { get; set; }
 
-        public MonitorSetting() { }
-
-        public MonitorSetting(string[] monitorFolders, string[] monitorFileTypes)
-        {
-            MonitorFolders = monitorFolders;
-            MonitorFileTypes = monitorFileTypes;
-        }
-
-
-    }
 }

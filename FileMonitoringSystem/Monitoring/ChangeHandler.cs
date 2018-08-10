@@ -4,12 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using FileMonitoringSystem.Repo;
+using FileMonitoringSystem.Common;
 
 namespace FileMonitoringSystem.Monitoring
 {
-    class ChangeHandler
+    public class ChangeHandler : ThreadWorker
     {
         private const string _pathCopiedFiles = @"Copied\";
         private IRepository _repository;
@@ -22,18 +22,21 @@ namespace FileMonitoringSystem.Monitoring
             _repository = repo;
             _changeBuf = changeBuf;
         }
-        
-        public void InitializeHandle()
+
+        protected override void Work()
         {
-            while (FlagHandle)
+            while (!CancelFlag.IsCancellationRequested)
             {
                 FileState temp = _changeBuf.Dequeue(10);
                 if (temp != null)
-                    addFileState(temp);
+                    AddFileState(temp);
+                else
+                    // поспим 5 секунд, чтоб не жрать процессор этим циклом, пока что у нас нет подходящих FileState
+                    Sleep(5000);
             }
         }
 
-        private void addFileState(FileState fileState)
+        private void AddFileState(FileState fileState)
         {
             FileData fd = _repository.ReturnDataBase().FirstOrDefault(entry => entry.OldPath == fileState.OldPath);
             if (fd != null)

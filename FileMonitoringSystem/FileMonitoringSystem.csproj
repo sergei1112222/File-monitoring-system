@@ -67,6 +67,8 @@
     <Compile Include="Repo\IRepository.cs" />
     <Compile Include="Repo\ImplementRepo\Repository.cs" />
     <Compile Include="Sender\ISender.cs" />
+    <Compile Include="Common\IWorker.cs" />
+    <Compile Include="Common\ThreadWorker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

@@ -8,57 +8,46 @@ using FileMonitoringSystem.Configuration;
 using FileMonitoringSystem.Monitoring;
 using FileMonitoringSystem.Configuration.Configurator;
 using FileMonitoringSystem.Repo;
+using FileMonitoringSystem.Common;
 
-namespace FileMonitoringSystem.Client
+namespace FileMonitoringSystem
 {
     
     public class ClientManager
-    {
-      
+    {      
         private IConfiguration _conf;
-        private MonitorSetting monitorSetting;
-
-        public ChangesBuffer changeBuf;
-        public IRepository Repo;
-        public Monitor FileChangeListeners;
-
+        private IRepository _repo;
+        private IEnumerable<IWorker> _workers;
 
         public ClientManager(IConfiguration config, IRepository repository)
         {
             _conf = config;
-            Repo = new Repository();
-            monitorSetting = _conf.GetMonitorSetting();
-            changeBuf = new ChangesBuffer();
+            _repo = new Repository();
         }
+
+        public void InitializeWorkers()
+        {
+            ChangesBuffer buffer = new ChangesBuffer();
+
+            List<IWorker> workers = new List<IWorker>();
+            workers.Add(new Monitor(buffer, _conf.GetMonitorSettings()));
+            workers.Add(new ChangeHandler(buffer, _repo));
+            //TODO: add Sender Worker
+
+            _workers = workers;
+        }
+
         public void Start()
         {
-            //Start monitoring
-            //Start Change handle
-            //Start sender
+            foreach (var worker in _workers)
+                worker.Start();
         }
 
         public void Stop()
         {
-
-        }
-
-        public void InitializeListeners()
-        {
-            FileChangeListeners = new Monitor(changeBuf, monitorSetting.MonitorFileTypes, monitorSetting.MonitorFolders);
-            new System.Threading.Thread(operationListener).Start();
-        }
-
-        private void operationListener()
-        {
-            while (true)
-            {
-                changeBuf.Dequeue(5);
-            }
-        }
-        public void OperationWithModFile()
-        {
-
-        }
+            foreach (var worker in _workers)
+                worker.Stop();
+        }       
 
     }
 }
