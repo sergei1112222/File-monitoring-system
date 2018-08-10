@@ -12,7 +12,7 @@ namespace FileMonitoringSystem.Monitoring
 {
     public class Monitor
     {
-        private  FileSystemWatcher [] _fileSystemWatcher;
+        private FileSystemWatcher[] _fileSystemWatcher;
         private ChangesBuffer _buff;
         private ILog _log = LogManager.GetLogger(typeof(Monitor).Name);
 
