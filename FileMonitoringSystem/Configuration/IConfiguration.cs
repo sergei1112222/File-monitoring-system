@@ -11,12 +11,11 @@ using FileMonitoringSystem.Sender;
 namespace FileMonitoringSystem.Configuration
 {
     public interface IConfiguration
-    {
-        
-        SenderSetting GetServerSetting();
+    {        
+        SenderSettings GetServerSettings();
 
-        MonitorSetting GetMonitorSetting();
+        MonitorSettings GetMonitorSettings();
 
-        DbSetting GetDbSetting();
+        DbSettings GetDbSettings();
     }
 }

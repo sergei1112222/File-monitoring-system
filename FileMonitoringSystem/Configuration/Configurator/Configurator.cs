@@ -15,12 +15,12 @@ namespace FileMonitoringSystem.Configuration.Configurator
     {
         private const string _configPath = "config.xml";
 
-        public SenderSetting GetServerSetting()
+        public SenderSettings GetServerSettings()
         {
-            return new SenderSetting();
+            return new SenderSettings();
         }
 
-        public MonitorSetting GetMonitorSetting()
+        public MonitorSettings GetMonitorSettings()
         {
             string monitoringDirArr = "";
             string monitoringTypeArr = "";
@@ -36,12 +36,12 @@ namespace FileMonitoringSystem.Configuration.Configurator
                     monitoringTypeArr = xNode.InnerText;
                 }
             }
-            return new MonitorSetting(monitoringDirArr.Split(','), monitoringTypeArr.Split(','));
+            return new MonitorSettings(monitoringDirArr.Split(','), monitoringTypeArr.Split(','));
         }
 
-        public DbSetting GetDbSetting()
+        public DbSettings GetDbSettings()
         {
-            return new DbSetting();
+            return new DbSettings();
         }
 
         private XmlElement LoadConfig(string unitName)

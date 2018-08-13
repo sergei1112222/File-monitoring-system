@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace FileMonitoringSystem.Repo
 {
-    public class DbSetting
+    public class DbSettings
     {
         string _dbAddr;
 
-        public DbSetting() { }
+        public DbSettings() { }
 
     }
     public class FileData

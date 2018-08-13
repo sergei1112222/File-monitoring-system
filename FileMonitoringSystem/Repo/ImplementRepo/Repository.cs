@@ -34,7 +34,7 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
         {
             _db.Add(fileData);
             _log.Info($"Compress start, {fileData.Path}");
-            Compress(fileData.Path, $"ZipStorage\\ {fileData.Id.ToString()} .zip");
+            Compress(fileData.Path, $"ZipStorage\\ {fileData.Path}@.zip");
             _log.Info($"Compress success1, {fileData.Path}");
 
         }

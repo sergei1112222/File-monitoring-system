@@ -17,11 +17,14 @@ namespace FileMonitoringSystem.Monitoring
 
         public ChangesBuffer() { }
         
-        public void Created(string path)
+        public void Created(string path, string name)
         {
             lock (_files)
                 if (!_files.ContainsKey(path))
-                    _files.Add(path, new FileState(path));
+                {
+                    _log.Info($"Add in change buffer (created){path}");
+                    _files.Add(path, new FileState(path,name,false));
+                }
                 else
                 {
                     _files[path].IsDeleted = false;
@@ -29,35 +32,48 @@ namespace FileMonitoringSystem.Monitoring
                 }
         }
 
-        public void Changed(string path)
+        public void Changed(string path, string name)
         {
             lock (_files)
                 if (!_files.ContainsKey(path))
-                    _files.Add(path, new FileState(path));
+                {
+                    _files.Add(path, new FileState(path, name, false));
+                    _log.Info($"Add in change buffer (changed){path}");
+                }
+
                 else
+                {
+                    _log.Info($"Add in change buffer (changed){path}");
                     _files[path].Update();
+                }
+                    
         }
 
-        public void Deleted(string path)
+        public void Deleted(string path, string name)
         {
             lock (_files)
             {
                 if (!_files.ContainsKey(path))
-                    _files.Add(path, new FileState(path));
+                {
+                    _files.Add(path, new FileState(path, name, true));
+                    _log.Info($"Add in change buffer (changed){path}");
+                }
+                    
 
                 _files[path].IsDeleted = true;
                 _files[path].Update();
             }
         }
 
-        public void Renamed(string oldPath, string newPath)
+        public void Renamed(string oldPath, string newPath, string name)
         {
             lock (_files)
             {
                 if (_files.ContainsKey(oldPath))
                     _files.Remove(oldPath);
 
-                _files.Add(newPath, new FileState(newPath, oldPath));
+                _files.Add(newPath, new FileState(newPath, oldPath, name, false));
+                _log.Info($"Add in change buffer (rename){oldPath} --> {newPath}");
             }
         }
 

@@ -15,28 +15,23 @@ namespace FileMonitoringSystem
 {
     public partial class FileMonitoringService : ServiceBase
     {
-       
-        
+        private ClientManager _manager;
 
-        public FileMonitoringService()
+        public FileMonitoringService(ClientManager manager)
         {
             InitializeComponent();
-        }
-        public void operation()
-        {
-            
+
+            _manager = manager;
         }
 
         protected override void OnStart(string[] args)
         {
-            Client.ClientManager client = new Client.ClientManager();
-            client.InitializeListeners();
-            
+            _manager.Start();            
         }
 
         protected override void OnStop()
         {
-            
+            _manager.Stop();
         }
     }
 }

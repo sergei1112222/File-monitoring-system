@@ -14,14 +14,16 @@ namespace FileMonitoringSystem.Monitoring
         public bool IsDeleted { get; set; }
         public DateTime TimeSpan { get; set; }
 
-        public FileState(string path)
+        public FileState(string path, string name, bool isDeleted)
         {
             Path = path;
             TimeSpan = DateTime.Now;
+            Name = name;
+            IsDeleted = isDeleted;
         }
 
-        public FileState(string path, string oldPath)
-            : this(path)
+        public FileState(string path, string oldPath, string name, bool isDeleted)
+            : this(path,name, isDeleted)
         {
             OldPath = oldPath;
         }
