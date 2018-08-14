@@ -9,14 +9,12 @@ using FileMonitoringSystem.Monitoring;
 using FileMonitoringSystem.Configuration.Configurator;
 using FileMonitoringSystem.Repo;
 using FileMonitoringSystem.Common;
-using log4net;
 
 namespace FileMonitoringSystem
 {
-    
+
     public class ClientManager
     {
-        private ILog _log = LogManager.GetLogger(typeof(ClientManager).Name);
         private IConfiguration _conf;
         private IRepository _repo;
         private IEnumerable<IWorker> _workers;
@@ -30,8 +28,7 @@ namespace FileMonitoringSystem
         public void InitializeWorkers()
         {
             ChangesBuffer buffer = new ChangesBuffer();
-            _log.Info("Initialize workers");
-            LogManager.Flush(1);
+
             List<IWorker> workers = new List<IWorker>();
             workers.Add(new Monitor(buffer, _conf.GetMonitorSettings()));
             workers.Add(new ChangeHandler(buffer, _repo));
@@ -42,7 +39,6 @@ namespace FileMonitoringSystem
 
         public void Start()
         {
-            
             foreach (var worker in _workers)
                 worker.Start();
         }
@@ -51,7 +47,7 @@ namespace FileMonitoringSystem
         {
             foreach (var worker in _workers)
                 worker.Stop();
-        }       
+        }
 
     }
 }

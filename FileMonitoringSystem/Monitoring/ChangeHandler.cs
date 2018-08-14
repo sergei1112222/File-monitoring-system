@@ -6,7 +6,9 @@ using System.Security.Cryptography;
 using System.Text;
 using FileMonitoringSystem.Repo;
 using FileMonitoringSystem.Common;
+
 using log4net;
+
 
 namespace FileMonitoringSystem.Monitoring
 {
@@ -32,13 +34,14 @@ namespace FileMonitoringSystem.Monitoring
                 FileState temp = _changeBuf.Dequeue(10);
                 
                 if (temp != null)
+
                 {
                     _log.Info("Add file state");
 
                     AddFileState(temp);
                    
                 }
-                    
+
                 else
                     // поспим 5 секунд, чтоб не жрать процессор этим циклом, пока что у нас нет подходящих FileState
                     Sleep(5000);

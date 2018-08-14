@@ -26,9 +26,10 @@ namespace FileMonitoringSystem
             }
             log4net.GlobalContext.Properties["tab"] = "\t";
             log4net.Config.XmlConfigurator.Configure(logConf);
+
             
             _log = LogManager.GetLogger(typeof(Program).Name);   
-            
+        
         }
 
         private static ClientManager CreateClient()
@@ -76,6 +77,29 @@ namespace FileMonitoringSystem
                      ServiceBase.Run(ServicesToRun);
 
                  }*/
+
+                
+                var args = Environment.GetCommandLineArgs();
+                if (args.Length > 1 && args[1] == "console")
+                {
+                    client.Start();
+                    _log.Info("Start as console");
+                    // stop after 1 minute
+                    Thread.Sleep(60000);
+                    client.Stop();
+                }
+                else
+                {
+                    _log.Info("Start as service");
+                    ServiceBase[] ServicesToRun;
+                    ServicesToRun = new ServiceBase[]
+                    {
+                        new FileMonitoringService(client)
+                    };
+                    ServiceBase.Run(ServicesToRun);
+                    
+                }
+
             }
             catch(Exception ex)
             {

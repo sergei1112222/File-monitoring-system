@@ -100,7 +100,11 @@ namespace FileMonitoringSystem.Monitoring
         private  void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
             _log.Info($"{e.FullPath} removed!");
+
             _buff.Deleted(e.FullPath, e.Name);          
+
+            _buff.Deleted(e.FullPath, e.Name);          
+
             
         }
     }
