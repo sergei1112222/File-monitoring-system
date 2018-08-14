@@ -9,7 +9,6 @@ using log4net;
 
 namespace FileMonitoringSystem.Monitoring
 {
-
     public class ChangesBuffer
     {
         private Dictionary<string, FileState> _files = new Dictionary<string, FileState>();
@@ -56,7 +55,7 @@ namespace FileMonitoringSystem.Monitoring
                 if (!_files.ContainsKey(path))
                 {
                     _files.Add(path, new FileState(path, name, true));
-                    _log.Info($"Add in change buffer (changed){path}");
+                    _log.Info($"Add in change buffer (deleted){path}");
                 }
                     
 

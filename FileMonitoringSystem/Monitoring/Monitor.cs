@@ -28,7 +28,6 @@ namespace FileMonitoringSystem.Monitoring
     public class Monitor : IWorker
     {
         private ILog _log = LogManager.GetLogger(typeof(Monitor).Name);
-
         private MonitorSettings _settings;        
         private ChangesBuffer _buff;
         private FileSystemWatcher[] _watchers;
@@ -79,7 +78,6 @@ namespace FileMonitoringSystem.Monitoring
             return _fsw;
         }
 
-
         private  void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
             _log.Info($"{e.FullPath} created!");
@@ -100,12 +98,7 @@ namespace FileMonitoringSystem.Monitoring
         private  void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
             _log.Info($"{e.FullPath} removed!");
-
-            _buff.Deleted(e.FullPath, e.Name);          
-
-            _buff.Deleted(e.FullPath, e.Name);          
-
-            
+            _buff.Deleted(e.FullPath, e.Name);           
         }
     }
 

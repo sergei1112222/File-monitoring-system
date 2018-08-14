@@ -11,8 +11,7 @@ using FileMonitoringSystem.Repo;
 using FileMonitoringSystem.Common;
 
 namespace FileMonitoringSystem
-{
-
+{ 
     public class ClientManager
     {
         private IConfiguration _conf;
@@ -22,7 +21,7 @@ namespace FileMonitoringSystem
         public ClientManager(IConfiguration config, IRepository repository)
         {
             _conf = config;
-            _repo = new Repository();
+            _repo = new FakeRepository();
         }
 
         public void InitializeWorkers()

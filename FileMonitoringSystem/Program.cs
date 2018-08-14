@@ -35,7 +35,7 @@ namespace FileMonitoringSystem
         private static ClientManager CreateClient()
         {
             // инициализация зависимостей. Может быть реализовано через Ninject, но для простоты пишем сами
-            Repo.IRepository repo = new Repo.ImplementRepo.Repository();
+            Repo.IRepository repo = new Repo.ImplementRepo.FakeRepository();
             Configuration.IConfiguration conf = new Configuration.Configurator.Configurator();
 
             // создание и инициализация клиента
@@ -53,32 +53,7 @@ namespace FileMonitoringSystem
             try
             {
                 ConfigLog();
-                var client = CreateClient();
-                client.Start();
-                Thread.Sleep(60000);
-                client.Stop();
-                /* var args = Environment.GetCommandLineArgs();
-                 if (args.Length > 1 && args[1] == "console")
-                 {
-                     client.Start();
-                     _log.Info("Start as console");
-                     // stop after 1 minute
-                     Thread.Sleep(60000);
-                     client.Stop();
-                 }
-                 else
-                 {
-                     _log.Info("Start as service");
-                     ServiceBase[] ServicesToRun;
-                     ServicesToRun = new ServiceBase[]
-                     {
-                         new FileMonitoringService(client)
-                     };
-                     ServiceBase.Run(ServicesToRun);
-
-                 }*/
-
-                
+                var client = CreateClient();       
                 var args = Environment.GetCommandLineArgs();
                 if (args.Length > 1 && args[1] == "console")
                 {
