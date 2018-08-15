@@ -57,10 +57,8 @@ namespace FileMonitoringSystem.Monitoring
                 locFileData = new FileData(g, fileState.Path, fileState.OldPath, fileState.IsDeleted, fileState.TimeSpan, ComputeContentHashWithCompress(fileState.Path, g.ToString()));
                 _log.Info($"Add entry  {fileState.Path}");
             }
-            lock (_repository)
-            {
                 _repository.Insert(locFileData);
-            }
+            
         }
 
         private string ComputeContentHashWithCompress(string path, string id)

@@ -22,15 +22,14 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
 
         public void Insert(FileData fileData)
         {
-            _db.Add(fileData);
+            lock (_db)
+                _db.Add(fileData);
         }
 
         public void Remove(FileData removeData)
         {
             lock (_db)
-            {
                 _db.Remove(removeData);
-            } 
         }
         public IEnumerable<FileData> GetOldestData(int limit)
         {
