@@ -27,6 +27,7 @@ namespace FileMonitoringSystem.Sender
     {
         private IFileStateRepository _repo;
         private ILog _log = LogManager.GetLogger(typeof(FileStateSender).Name);
+        private int _timeOut;
 
         public FileStateSender(IFileStateRepository repo)
         {
@@ -37,15 +38,13 @@ namespace FileMonitoringSystem.Sender
         {
             while (!CancelFlag.IsCancellationRequested)
             {
-                FileData temp = GetFIleState(10);
-                if (temp != null)
+                try
                 {
-                    _log.Info("Send file state");
-                    FakeSend(temp);
+
                 }
-                else
-                    // поспим 5 секунд, чтоб не жрать процессор этим циклом, пока что у нас нет подходящих FileState
-                    Sleep(1000);
+                cathc(){
+
+                }
             }
         }
 

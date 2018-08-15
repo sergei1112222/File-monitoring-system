@@ -34,7 +34,7 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
         public IEnumerable<FileData> GetOldestData(int limit)
         {
             lock (_db)
-                return _db.OrderBy(state => state.TimeSpan).Take(limit);
+                return _db.OrderBy(state => state.TimeSpan).Take(limit).ToList();
         }
 
     }
