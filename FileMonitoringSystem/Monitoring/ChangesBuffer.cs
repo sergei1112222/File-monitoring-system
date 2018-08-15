@@ -71,7 +71,7 @@ namespace FileMonitoringSystem.Monitoring
                 if (_files.ContainsKey(oldPath))
                     _files.Remove(oldPath);
 
-                _files.Add(newPath, new FileState(newPath, oldPath, name, false));
+                _files.Add(newPath, new FileState(newPath, oldPath, false));
                 _log.Info($"Add in change buffer (rename){oldPath} --> {newPath}");
             }
         }

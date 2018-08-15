@@ -14,7 +14,7 @@ namespace FileMonitoringSystem.Monitoring
 {
     public class ChangeHandler : ThreadWorker
     {
-        private const string _pathCopiedFiles = @"Copied\";
+        private const string _pathDirCopiedFiles = @"Copied\";
         private IRepository _repository;
         private ChangesBuffer _changeBuf;
         private ILog _log = LogManager.GetLogger(typeof(ChangeHandler).Name);
@@ -32,100 +32,49 @@ namespace FileMonitoringSystem.Monitoring
             while (!CancelFlag.IsCancellationRequested)
             {
                 FileState temp = _changeBuf.Dequeue(10);
-                
                 if (temp != null)
-
                 {
                     _log.Info("Add file state");
-
-                    AddFileState(temp);
-                   
+                    addFileState(temp); 
                 }
-
                 else
                     // поспим 5 секунд, чтоб не жрать процессор этим циклом, пока что у нас нет подходящих FileState
                     Sleep(1000);
             }
         }
 
-        private void AddFileState(FileState fileState)
+        private void addFileState(FileState fileState)
         {
-            FileData fd;
-            if (fileState.OldPath != null)
-            {
-                 fd = _repository.ReturnDataBase().FirstOrDefault(entry => entry.Path == fileState.OldPath);
-            }
-            else
-            {
-                 fd = _repository.ReturnDataBase().FirstOrDefault(entry => entry.Path == fileState.Path);
-            }
             FileData locFileData = null;
-            if ((fd != null) && (!fd.IsRemove))
+            if (fileState.IsDeleted)
             {
-                if (fileState.IsDeleted)
-                {
-                    locFileData = new FileData(fd.Id, fd.Path, fd.Name, fd.OldPath, true, fileState.TimeSpan, fd.ContentHash);
-                    _log.Info($"Add entry (delete {fd.Path})");
-                }
-                else
-                {
-                    if ((fileState.Path != fileState.OldPath) && (fileState.OldPath != null))
-                    {
-                        locFileData = new FileData(fd.Id, fileState.Path, fileState.Name, fd.OldPath, fd.IsRemove, fileState.TimeSpan, fd.ContentHash);
-                        _log.Info($"Add entry (rename {fd.Path})");
-                    }
-                    else
-                    {
-                        string hashInputFile = computeContentHash(fileState.Path, fileState.Name);
-                        if (hashInputFile != fd.ContentHash)
-                        {
-                            locFileData = new FileData(fd.Id, fd.Path, fd.Name, fd.OldPath, fd.IsRemove, fileState.TimeSpan, hashInputFile);
-                            compressOperation(locFileData);
-                            _log.Info($"Add entry (update {fd.Path})");
-                        }
-                    }
-                    
-                }
+                locFileData = new FileData(Guid.NewGuid(), fileState.Path, fileState.OldPath, true, fileState.TimeSpan, "");
+                _log.Info($"Add entry (delete) {fileState.Path}");
             }
             else
             {
-                _log.Info("In addfilestate: = null");
-                if (!fileState.IsDeleted)
-                {
-                    if ((fileState.Path != fileState.OldPath) && (fileState.OldPath != null))
-                    {
-                        locFileData = new FileData(Guid.NewGuid(), fileState.Path, fileState.Name, fileState.OldPath, fileState.IsDeleted, fileState.TimeSpan, computeContentHash(fileState.Path, fileState.Name));
-                        compressOperation(locFileData);
-                        _log.Info($"Add entry (rename {fileState.OldPath} --> {fileState.Path})");
-                    }
-                    else
-                    {
-                        locFileData = new FileData(Guid.NewGuid(), fileState.Path, fileState.Name, fileState.OldPath, fileState.IsDeleted, fileState.TimeSpan, computeContentHash(fileState.Path, fileState.Name));
-                        _log.Info($"Add entry (new {fileState.Path})");
-                        compressOperation(locFileData);
-                    }
-
-                }
-                else
-                {
-                    locFileData =  new FileData(Guid.NewGuid(), fileState.Path, fileState.Name, fileState.OldPath, true, fileState.TimeSpan, "");
-                    _log.Info($"Add entry (delete {fileState.Path})");  
-                }
-                
+                Guid g = Guid.NewGuid();
+                locFileData = new FileData(g, fileState.Path, fileState.OldPath, fileState.IsDeleted, fileState.TimeSpan, computeContentHashWithCompress(fileState.Path, g.ToString()));
+                _log.Info($"Add entry  {fileState.Path}");
             }
-            _repository.Insert(locFileData);
+            lock (_repository)
+            {
+                _repository.Insert(locFileData);
+            }
         }
 
-        private string computeContentHash(string path, string name)
+        private string computeContentHashWithCompress(string path, string id)
         {
-            File.Copy(path, _pathCopiedFiles + name);
+            string pathForCopyFile = _pathDirCopiedFiles + id + Path.GetExtension(path);
+            File.Copy(path, pathForCopyFile);
             string hash = "";
-            using (FileStream fs = File.OpenRead(_pathCopiedFiles + name))
+            using (FileStream fs = File.OpenRead(pathForCopyFile))
             {
                 _log.Info("success opening copy file");
                 hash = Encoding.Default.GetString(MD5.Create().ComputeHash(fs));
             }
-            File.Delete(_pathCopiedFiles + name);
+            compressOperation(pathForCopyFile);
+            File.Delete(pathForCopyFile);
             _log.Info("end computing hash");
             return hash;
         }
@@ -147,11 +96,11 @@ namespace FileMonitoringSystem.Monitoring
             }
         }
 
-        private void compressOperation(FileData fileData)
+        private void compressOperation(string path)
         {
-            _log.Info($"Compress start, {fileData.Path}");
-            compress(fileData.Path, $"ZipStorage\\ {fileData.Id}.zip");
-            _log.Info($"Compress success1, {fileData.Path}"); 
+            _log.Info($"Compress start, {path}");
+            compress(path, $"ZipStorage\\ {Path.GetFileNameWithoutExtension(path)}.zip");
+            _log.Info($"Compress success1, {path}"); 
         }
 
     }

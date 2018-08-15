@@ -15,6 +15,8 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
         private List<FileData> _db;
         private ILog _log = LogManager.GetLogger(typeof(FakeRepository).Name);
 
+        public int Count { get { return _db.Count; } }
+
         public FakeRepository()
         {
             _db = new List<FileData>();
@@ -25,14 +27,31 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
             _db.Add(fileData);
         }
 
-        public void Delete(FileData removeData)
+        public void Remove(FileData removeData)
         {
-            _db.Remove(removeData);
+            lock (_db)
+            {
+                _db.Remove(removeData);
+            } 
         }
 
         public List<FileData> ReturnDataBase()
         {
             return _db.GetRange(0, _db.Count);
         }
+
+        public List<FileData> Query(Func<FileData, bool> predicate)
+        {
+            List<FileData> locList = new List<FileData>();
+            foreach (var elem in _db)
+            {
+                if (predicate(elem))
+                {
+                    locList.Add(elem);
+                }
+            }
+            return locList;
+        }
+
     }
 }

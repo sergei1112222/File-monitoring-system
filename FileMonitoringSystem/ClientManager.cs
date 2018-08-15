@@ -9,6 +9,7 @@ using FileMonitoringSystem.Monitoring;
 using FileMonitoringSystem.Configuration.Configurator;
 using FileMonitoringSystem.Repo;
 using FileMonitoringSystem.Common;
+using FileMonitoringSystem.Sender;
 
 namespace FileMonitoringSystem
 { 
@@ -31,6 +32,7 @@ namespace FileMonitoringSystem
             List<IWorker> workers = new List<IWorker>();
             workers.Add(new Monitor(buffer, _conf.GetMonitorSettings()));
             workers.Add(new ChangeHandler(buffer, _repo));
+            workers.Add(new FakeSender(_repo));
             //TODO: add Sender Worker
 
             _workers = workers;

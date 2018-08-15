@@ -17,18 +17,16 @@ namespace FileMonitoringSystem.Repo
     {
         public Guid Id { get; set; }
         public string Path { get; set; }
-        public string Name { get; set; }
         public string OldPath { get; set; }
         public bool IsRemove { get; set; }
         public DateTime TimeSpan { get; set; }
         public string ContentHash { get; set; }
         public FileData() { }
 
-        public FileData(Guid id, string path, string name, string oldPath,bool isRemove, DateTime timeSpan, string contentHash)
+        public FileData(Guid id, string path, string oldPath,bool isRemove, DateTime timeSpan, string contentHash)
         {
             Id = id;
             Path = path;
-            Name = name;
             OldPath = oldPath;
             IsRemove = isRemove;
             TimeSpan = timeSpan;
@@ -38,9 +36,10 @@ namespace FileMonitoringSystem.Repo
 
     public interface IRepository
     {
-       
         void Insert(FileData entity);
-        void Delete(FileData removeData);
+        void Remove(FileData removeData);
         List<FileData> ReturnDataBase();
+        int Count { get; }
+        List<FileData> Query(Func<FileData, bool> predicate);
     }
 }
