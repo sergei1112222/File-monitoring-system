@@ -23,12 +23,12 @@ namespace FileMonitoringSystem.Sender
         }
     }
 
-    public class FakeSender: ThreadWorker
+    public class FileStateSender: ThreadWorker
     {
         private IFileStateRepository _repo;
-        private ILog _log = LogManager.GetLogger(typeof(FakeSender).Name);
+        private ILog _log = LogManager.GetLogger(typeof(FileStateSender).Name);
 
-        public FakeSender(IFileStateRepository repo)
+        public FileStateSender(IFileStateRepository repo)
         {
             _repo = repo;
         }
@@ -51,7 +51,7 @@ namespace FileMonitoringSystem.Sender
 
         private FileData GetFIleState(int intactSeconds)
         {
-            if (_repo.Count != 0)
+            /*f (_repo.Count != 0)
                 lock (_repo)
                 {
                     if (_repo.Count != 0)
@@ -64,9 +64,9 @@ namespace FileMonitoringSystem.Sender
                             _log.Info($"Removed from DB: {fileState.Path}");
                             _repo.Remove(fileState);
                             return fileState;
-                        }*/
+                        }
                     }
-                }
+                }*/
             return null;
         }
 

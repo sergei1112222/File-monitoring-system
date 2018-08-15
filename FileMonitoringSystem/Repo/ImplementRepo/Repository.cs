@@ -10,14 +10,12 @@ using log4net;
 
 namespace FileMonitoringSystem.Repo.ImplementRepo
 {
-    public class FakeRepository: IFileStateRepository
+    public class FakeFileStateRepository: IFileStateRepository
     {
         private List<FileData> _db;
-        private ILog _log = LogManager.GetLogger(typeof(FakeRepository).Name);
+        private ILog _log = LogManager.GetLogger(typeof(FakeFileStateRepository).Name);
 
-        public int Count { get { return _db.Count; } }
-
-        public FakeRepository()
+        public FakeFileStateRepository()
         {
             _db = new List<FileData>();
         }

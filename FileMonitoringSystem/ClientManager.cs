@@ -22,7 +22,7 @@ namespace FileMonitoringSystem
         public ClientManager(IConfiguration config, IFileStateRepository repository)
         {
             _conf = config;
-            _repo = new FakeRepository();
+            _repo = new FakeFileStateRepository();
         }
 
         public void InitializeWorkers()
@@ -32,7 +32,7 @@ namespace FileMonitoringSystem
             List<IWorker> workers = new List<IWorker>();
             workers.Add(new Monitor(buffer, _conf.GetMonitorSettings()));
             workers.Add(new ChangeHandler(buffer, _repo));
-            workers.Add(new FakeSender(_repo));
+            workers.Add(new FileStateSender(_repo));
             //TODO: add Sender Worker
 
             _workers = workers;

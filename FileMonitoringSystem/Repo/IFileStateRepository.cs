@@ -38,6 +38,6 @@ namespace FileMonitoringSystem.Repo
     {
         void Insert(FileData entity);
         void Remove(FileData removeData);
-        int Count { get; }
+
     }
 }
