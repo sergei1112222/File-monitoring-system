@@ -35,7 +35,7 @@ namespace FileMonitoringSystem
         private static ClientManager CreateClient()
         {
             // инициализация зависимостей. Может быть реализовано через Ninject, но для простоты пишем сами
-            Repo.IRepository repo = new Repo.ImplementRepo.FakeRepository();
+            Repo.IFileStateRepository repo = new Repo.ImplementRepo.FakeRepository();
             Configuration.IConfiguration conf = new Configuration.Configurator.Configurator();
 
             // создание и инициализация клиента

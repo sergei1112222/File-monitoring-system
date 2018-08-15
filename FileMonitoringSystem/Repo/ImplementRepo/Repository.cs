@@ -10,7 +10,7 @@ using log4net;
 
 namespace FileMonitoringSystem.Repo.ImplementRepo
 {
-    public class FakeRepository: IRepository
+    public class FakeRepository: IFileStateRepository
     {
         private List<FileData> _db;
         private ILog _log = LogManager.GetLogger(typeof(FakeRepository).Name);
@@ -34,24 +34,5 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
                 _db.Remove(removeData);
             } 
         }
-
-        public List<FileData> ReturnDataBase()
-        {
-            return _db.GetRange(0, _db.Count);
-        }
-
-        public List<FileData> Query(Func<FileData, bool> predicate)
-        {
-            List<FileData> locList = new List<FileData>();
-            foreach (var elem in _db)
-            {
-                if (predicate(elem))
-                {
-                    locList.Add(elem);
-                }
-            }
-            return locList;
-        }
-
     }
 }

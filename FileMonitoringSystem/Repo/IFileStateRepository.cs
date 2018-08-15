@@ -23,7 +23,7 @@ namespace FileMonitoringSystem.Repo
         public string ContentHash { get; set; }
         public FileData() { }
 
-        public FileData(Guid id, string path, string oldPath,bool isRemove, DateTime timeSpan, string contentHash)
+        public FileData(Guid id, string path, string oldPath, bool isRemove, DateTime timeSpan, string contentHash)
         {
             Id = id;
             Path = path;
@@ -34,12 +34,10 @@ namespace FileMonitoringSystem.Repo
         }
     }
 
-    public interface IRepository
+    public interface IFileStateRepository
     {
         void Insert(FileData entity);
         void Remove(FileData removeData);
-        List<FileData> ReturnDataBase();
         int Count { get; }
-        List<FileData> Query(Func<FileData, bool> predicate);
     }
 }

@@ -64,7 +64,7 @@
     <Compile Include="Monitoring\Monitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repo\IRepository.cs" />
+    <Compile Include="Repo\IFileStateRepository.cs" />
     <Compile Include="Repo\ImplementRepo\Repository.cs" />
     <Compile Include="Sender\FakeSender.cs" />
     <Compile Include="Common\IWorker.cs" />

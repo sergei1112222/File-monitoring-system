@@ -15,13 +15,13 @@ namespace FileMonitoringSystem.Monitoring
     public class ChangeHandler : ThreadWorker
     {
         private const string _pathDirCopiedFiles = @"Copied\";
-        private IRepository _repository;
+        private IFileStateRepository _repository;
         private ChangesBuffer _changeBuf;
         private ILog _log = LogManager.GetLogger(typeof(ChangeHandler).Name);
 
         public bool FlagHandle { get; set; }
 
-        public ChangeHandler(ChangesBuffer changeBuf, IRepository repo)
+        public ChangeHandler(ChangesBuffer changeBuf, IFileStateRepository repo)
         {
             _repository = repo;
             _changeBuf = changeBuf;
@@ -35,7 +35,7 @@ namespace FileMonitoringSystem.Monitoring
                 if (temp != null)
                 {
                     _log.Info("Add file state");
-                    addFileState(temp); 
+                    AddFileState(temp); 
                 }
                 else
                     // поспим 5 секунд, чтоб не жрать процессор этим циклом, пока что у нас нет подходящих FileState
@@ -43,7 +43,7 @@ namespace FileMonitoringSystem.Monitoring
             }
         }
 
-        private void addFileState(FileState fileState)
+        private void AddFileState(FileState fileState)
         {
             FileData locFileData = null;
             if (fileState.IsDeleted)
@@ -54,7 +54,7 @@ namespace FileMonitoringSystem.Monitoring
             else
             {
                 Guid g = Guid.NewGuid();
-                locFileData = new FileData(g, fileState.Path, fileState.OldPath, fileState.IsDeleted, fileState.TimeSpan, computeContentHashWithCompress(fileState.Path, g.ToString()));
+                locFileData = new FileData(g, fileState.Path, fileState.OldPath, fileState.IsDeleted, fileState.TimeSpan, ComputeContentHashWithCompress(fileState.Path, g.ToString()));
                 _log.Info($"Add entry  {fileState.Path}");
             }
             lock (_repository)
@@ -63,7 +63,7 @@ namespace FileMonitoringSystem.Monitoring
             }
         }
 
-        private string computeContentHashWithCompress(string path, string id)
+        private string ComputeContentHashWithCompress(string path, string id)
         {
             string pathForCopyFile = _pathDirCopiedFiles + id + Path.GetExtension(path);
             File.Copy(path, pathForCopyFile);
@@ -73,13 +73,13 @@ namespace FileMonitoringSystem.Monitoring
                 _log.Info("success opening copy file");
                 hash = Encoding.Default.GetString(MD5.Create().ComputeHash(fs));
             }
-            compressOperation(pathForCopyFile);
+            CompressOperation(pathForCopyFile);
             File.Delete(pathForCopyFile);
             _log.Info("end computing hash");
             return hash;
         }
 
-        private void compress(string sourceFile, string compressedFile)
+        private void Compress(string sourceFile, string compressedFile)
         {
             // поток для чтения исходного файла
             using (FileStream sourceStream = new FileStream(sourceFile, FileMode.OpenOrCreate))
@@ -96,10 +96,10 @@ namespace FileMonitoringSystem.Monitoring
             }
         }
 
-        private void compressOperation(string path)
+        private void CompressOperation(string path)
         {
             _log.Info($"Compress start, {path}");
-            compress(path, $"ZipStorage\\ {Path.GetFileNameWithoutExtension(path)}.zip");
+            Compress(path, $"ZipStorage\\ {Path.GetFileNameWithoutExtension(path)}.zip");
             _log.Info($"Compress success1, {path}"); 
         }
 

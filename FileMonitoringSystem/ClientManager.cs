@@ -16,10 +16,10 @@ namespace FileMonitoringSystem
     public class ClientManager
     {
         private IConfiguration _conf;
-        private IRepository _repo;
+        private IFileStateRepository _repo;
         private IEnumerable<IWorker> _workers;
 
-        public ClientManager(IConfiguration config, IRepository repository)
+        public ClientManager(IConfiguration config, IFileStateRepository repository)
         {
             _conf = config;
             _repo = new FakeRepository();

@@ -25,10 +25,10 @@ namespace FileMonitoringSystem.Sender
 
     public class FakeSender: ThreadWorker
     {
-        private IRepository _repo;
+        private IFileStateRepository _repo;
         private ILog _log = LogManager.GetLogger(typeof(FakeSender).Name);
 
-        public FakeSender(IRepository repo)
+        public FakeSender(IFileStateRepository repo)
         {
             _repo = repo;
         }
@@ -37,11 +37,11 @@ namespace FileMonitoringSystem.Sender
         {
             while (!CancelFlag.IsCancellationRequested)
             {
-                FileData temp = getFIleState(10);
+                FileData temp = GetFIleState(10);
                 if (temp != null)
                 {
                     _log.Info("Send file state");
-                    fakeSend(temp);
+                    FakeSend(temp);
                 }
                 else
                     // поспим 5 секунд, чтоб не жрать процессор этим циклом, пока что у нас нет подходящих FileState
@@ -49,28 +49,28 @@ namespace FileMonitoringSystem.Sender
             }
         }
 
-        private FileData getFIleState(int intactSeconds)
+        private FileData GetFIleState(int intactSeconds)
         {
             if (_repo.Count != 0)
                 lock (_repo)
                 {
                     if (_repo.Count != 0)
                     {
-                        var query = _repo.Query(f => f.TimeSpan < DateTime.Now.AddSeconds(-intactSeconds)).OrderBy(f => f.TimeSpan);
-                        if (query.Count() > 0)
+                        //var query = _repo.Query(f => f.TimeSpan < DateTime.Now.AddSeconds(-intactSeconds)).OrderBy(f => f.TimeSpan);
+                        /*if (query.Count() > 0)
                         {
                             var fileState = query.First();
 
                             _log.Info($"Removed from DB: {fileState.Path}");
                             _repo.Remove(fileState);
                             return fileState;
-                        }
+                        }*/
                     }
                 }
             return null;
         }
 
-        private void fakeSend(FileData fd)
+        private void FakeSend(FileData fd)
         {
             _log.Info($"Send file State {fd.Path}");
         }
