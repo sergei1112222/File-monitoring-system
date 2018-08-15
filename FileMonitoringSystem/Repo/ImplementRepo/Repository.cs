@@ -32,5 +32,11 @@ namespace FileMonitoringSystem.Repo.ImplementRepo
                 _db.Remove(removeData);
             } 
         }
+        public IEnumerable<FileData> GetOldestData(int limit)
+        {
+            lock (_db)
+                return _db.OrderBy(state => state.TimeSpan).Take(limit);
+        }
+
     }
 }

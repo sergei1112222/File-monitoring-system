@@ -22,7 +22,7 @@ namespace FileMonitoringSystem
         public ClientManager(IConfiguration config, IFileStateRepository repository)
         {
             _conf = config;
-            _repo = new FakeFileStateRepository();
+            _repo = repository;
         }
 
         public void InitializeWorkers()
