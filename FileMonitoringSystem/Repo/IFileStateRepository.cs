@@ -13,6 +13,8 @@ namespace FileMonitoringSystem.Repo
         public DbSettings() { }
 
     }
+
+    [Serializable]
     public class FileData
     {
         public Guid Id { get; set; }

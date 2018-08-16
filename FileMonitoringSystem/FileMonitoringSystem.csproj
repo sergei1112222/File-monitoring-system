@@ -70,7 +70,8 @@
     <Compile Include="Sender\FileStateSender.cs" />
     <Compile Include="Common\IWorker.cs" />
     <Compile Include="Common\ThreadWorker.cs" />
-    <Compile Include="Sender\IServer.cs" />
+    <Compile Include="Sender\ImplementSender\Sender.cs" />
+    <Compile Include="Sender\ISender.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -78,5 +79,6 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
